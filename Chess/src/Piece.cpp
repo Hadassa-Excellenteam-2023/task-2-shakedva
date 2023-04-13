@@ -1,26 +1,27 @@
 #include "Piece.h"
 
-Piece::Piece(string name, string color, int row, int col)
-	: _name(name), _color(color), _position(std::make_pair(row, col)), _isCaptured(false)
+Piece::Piece(bool color, int row, int col, Board* board)
+	: _color(color), _position(std::make_pair(row, col)), _board(board), _isCaptured(false)
 {}
 
-string Piece::getName()
+Piece::~Piece()
 {
-	return _name;
+	delete[] _board;
 }
 
-string Piece::getColor()
+
+bool Piece::getColor() const
 {
 	return _color;
 }
 
-bool Piece::getIsCaptured()
+bool Piece::getIsCaptured() const
 {
 	return _isCaptured;
 }
 
-std::pair<int, int> Piece::getPosition()
-{
+std::pair<int, int> Piece::getPosition() const
+{ 
 	return _position;
 }
 
@@ -31,6 +32,7 @@ void Piece::setPosition(int row, int col)
 
 void Piece::setCaptured()
 {
+	_position = std::make_pair(-9, -9);
 	_isCaptured = true;
 }
 

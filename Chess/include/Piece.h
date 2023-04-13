@@ -2,26 +2,27 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Board.h"
 
 using std::string;
 
 class Piece
 {
 public:
-	Piece(string, string, int, int);
-	string getName();
-	string getColor();
-	bool getIsCaptured();
-	std::pair<int, int> getPosition();
+	Piece(bool, int, int, Board*);
+	~Piece();
+	bool getColor() const;
+	bool getIsCaptured() const;
+	std::pair<int, int> getPosition() const;
 	void setPosition(int, int);
 	void setCaptured();
 	virtual std::vector<std::pair<int, int>> getValidMoves() = 0;
 	virtual std::vector<std::pair<int, int>> getPeacefulMoves() = 0;
 	virtual std::vector<std::pair<int, int>> getTakeMoves() = 0;
-	
-private:
-	string _name;
-	string _color;
+protected:
+	bool _color; // white is true
 	std::pair<int, int> _position;
+	Board* _board;
 	bool _isCaptured;
+	
 };
