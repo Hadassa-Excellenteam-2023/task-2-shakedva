@@ -2,22 +2,19 @@
 
 
 //It may move any number of squares horizontally or vertically
-std::vector<std::pair<int, int>> Rook::getValidMoves()
+vector<pair<int, int>> Rook::getValidMoves()
 {
-	std::vector<std::pair<int, int>> validMoves;
-	
-	//std::vector<std::pair<int, int>> peacefulMoves;
-	//std::vector<std::pair<int, int>> takeMoves;
+	vector<pair<int, int>> validMoves;
 
 	// up
 	for (int i = _position.first - 1; i >= 0; i--)
 	{
 		// Peaceful move
 		if (_board->isEmpty(i, _position.second))
-			validMoves.push_back(std::make_pair(i, _position.second));
+			validMoves.push_back(make_pair(i, _position.second));
 		// Take move
 		else if (_board->getPiece(i, _position.second)->getColor() != _color) {
-			validMoves.push_back(std::make_pair(i, _position.second));
+			validMoves.push_back(make_pair(i, _position.second));
 			break;
 		}
 		else if (_board->getPiece(i, _position.second)->getColor() == _color)
@@ -28,10 +25,10 @@ std::vector<std::pair<int, int>> Rook::getValidMoves()
 	{
 		// Peaceful move
 		if (_board->isEmpty(i, _position.second))
-			validMoves.push_back(std::make_pair(i, _position.second));
+			validMoves.push_back(make_pair(i, _position.second));
 		// Take move
 		else if (_board->getPiece(i, _position.second)->getColor() != _color) {
-			validMoves.push_back(std::make_pair(i, _position.second));
+			validMoves.push_back(make_pair(i, _position.second));
 			break;
 		}
 		else if (_board->getPiece(i, _position.second)->getColor() == _color)
@@ -42,10 +39,10 @@ std::vector<std::pair<int, int>> Rook::getValidMoves()
 	{
 		// Peaceful move
 		if (_board->isEmpty(_position.first, i))
-			validMoves.push_back(std::make_pair(_position.first, i));
+			validMoves.push_back(make_pair(_position.first, i));
 		// Take move
 		else if (_board->getPiece(_position.first, i)->getColor() != _color) {
-			validMoves.push_back(std::make_pair(_position.first, i));
+			validMoves.push_back(make_pair(_position.first, i));
 			break;
 		}
 		else if (_board->getPiece(_position.first, i)->getColor() == _color)
@@ -56,10 +53,10 @@ std::vector<std::pair<int, int>> Rook::getValidMoves()
 	{
 		// Peaceful move
 		if (_board->isEmpty(_position.first, i))
-			validMoves.push_back(std::make_pair(_position.first, i));
+			validMoves.push_back(make_pair(_position.first, i));
 		// Take move
 		else if (_board->getPiece(_position.first, i)->getColor() != _color) {
-			validMoves.push_back(std::make_pair(_position.first, i));
+			validMoves.push_back(make_pair(_position.first, i));
 			break;
 		}
 		else if (_board->getPiece(_position.first, i)->getColor() == _color)
@@ -70,12 +67,12 @@ std::vector<std::pair<int, int>> Rook::getValidMoves()
 	return validMoves;
 }
 
-std::vector<std::pair<int, int>> Rook::getPeacefulMoves()
+vector<pair<int, int>> Rook::getPeacefulMoves()
 {
-	return std::vector<std::pair<int, int>>();
+	return vector<pair<int, int>>();
 }
 
-std::vector<std::pair<int, int>> Rook::getTakeMoves()
+vector<pair<int, int>> Rook::getTakeMoves()
 {
-	return std::vector<std::pair<int, int>>();
+	return vector<pair<int, int>>();
 }

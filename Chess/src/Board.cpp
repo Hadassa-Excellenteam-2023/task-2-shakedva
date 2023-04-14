@@ -1,26 +1,32 @@
 #include "Board.h"
 #include "Rook.h"
+#include "King.h"
 
 //string board = "R######R################################################r######r";
 Board::Board() : _turn(true)
 {
+	//white pieces
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
+	_pieces.push_back(std::make_unique<King>(true, 0, 4, this));
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 7, this));
+
+	//black pieces
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 0, this));
+	_pieces.push_back(std::make_unique<King>(false, 7, 4, this));
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
+	
 
 }
 
 Board::~Board()
-{
-}
+{}
 
 bool Board::isEmpty(int row, int col)
 {
+	//todo: use getPiece
 	if (!isValidCoordinate(row, col))
-	{
-		//todo something
-	}
+		throw std::out_of_range("Invalid Coordinate");
+	
 	std::pair<int, int> pos = std::make_pair(row, col);
 	for (size_t i = 0; i < _pieces.size(); i++)
 		if (_pieces[i]->getPosition() == pos)
@@ -30,10 +36,8 @@ bool Board::isEmpty(int row, int col)
 
 Piece* Board::getPiece(int row, int col)
 {
-	if (!isValidCoordinate(row, col)) {
-		//todo throw exception
-		return nullptr;
-	}
+	if (!isValidCoordinate(row, col)) 
+		throw std::out_of_range("Invalid Coordinate");
 
 	std::pair<int, int> pos = std::make_pair(row, col);
 	for (size_t i = 0; i < _pieces.size(); i++)
@@ -85,8 +89,9 @@ int Board::movePiece(string input)
 		else
 		{
 			std::vector<std::pair<int, int>> validMoves = src_piece->getValidMoves();
-			//for (size_t i = 0; i < validMoves.size(); i++)
-				//std::cout << validMoves[i].first << ", " << validMoves[i].second << std::endl;
+			for (size_t i = 0; i < validMoves.size(); i++)
+				std::cout << typeid(*src_piece).name() << " " << validMoves[i].first << ", " << validMoves[i].second << std::endl;
+			
 			for (size_t i = 0; i < validMoves.size(); i++)
 			{
 				if (validMoves[i] == std::make_pair(trg_row, trg_col)) {

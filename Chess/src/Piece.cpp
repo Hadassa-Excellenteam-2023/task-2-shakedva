@@ -1,7 +1,7 @@
 #include "Piece.h"
 
 Piece::Piece(bool color, int row, int col, Board* board)
-	: _color(color), _position(std::make_pair(row, col)), _board(board), _isCaptured(false)
+	: _color(color), _position(make_pair(row, col)), _board(board), _isCaptured(false)
 {}
 
 Piece::~Piece()
@@ -27,12 +27,12 @@ std::pair<int, int> Piece::getPosition() const
 
 void Piece::setPosition(int row, int col)
 {
-	_position = std::make_pair(row, col);
+	_position = make_pair(row, col);
 }
 
 void Piece::setCaptured()
 {
-	_position = std::make_pair(-9, -9);
+	_position = make_pair(-9, -9);
 	_isCaptured = true;
 }
 

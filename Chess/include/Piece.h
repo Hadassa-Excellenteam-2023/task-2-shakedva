@@ -5,6 +5,10 @@
 #include "Board.h"
 
 using std::string;
+using std::vector;
+using std::pair;
+using std::make_pair;
+
 
 class Piece
 {
@@ -13,15 +17,15 @@ public:
 	~Piece();
 	bool getColor() const;
 	bool getIsCaptured() const;
-	std::pair<int, int> getPosition() const;
+	pair<int, int> getPosition() const;
 	void setPosition(int, int);
 	void setCaptured();
-	virtual std::vector<std::pair<int, int>> getValidMoves() = 0;
-	virtual std::vector<std::pair<int, int>> getPeacefulMoves() = 0;
-	virtual std::vector<std::pair<int, int>> getTakeMoves() = 0;
+	virtual vector<pair<int, int>> getValidMoves() = 0;
+	virtual vector<pair<int, int>> getPeacefulMoves() = 0;
+	virtual vector<pair<int, int>> getTakeMoves() = 0;
 protected:
 	bool _color; // white is true
-	std::pair<int, int> _position;
+	pair<int, int> _position;
 	Board* _board;
 	bool _isCaptured;
 	
