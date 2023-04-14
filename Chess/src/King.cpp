@@ -3,27 +3,37 @@
 #include <algorithm>
 #include <functional>
 
-//It may move to any adjoining square
-//it may also perform a move known as castling
-std::vector<std::pair<int, int>> King::getValidMoves()
+vector<pair<int, int>> King::getBasicMoves()
 {
 	int currRow = _position.first;
 	int currCol = _position.second;
-	vector<pair<int, int>> destSquares = {
+	vector<pair<int, int>> basicMoves = {
 		{currRow - 1, currCol - 1},
 		{currRow - 1, currCol},
 		{currRow - 1, currCol + 1},
-		{currRow, currCol - 1}, 
+		{currRow, currCol - 1},
 		{currRow, currCol + 1},
 		{currRow + 1, currCol - 1},
 		{currRow + 1, currCol},
 		{currRow + 1, currCol + 1}
 	};
 
-	destSquares.erase(
-		std::remove_if(destSquares.begin(), destSquares.end(),
-			[&](const pair<int, int>& p) { return !(_board->isValidCoordinate(p.first, p.second)); }),
-		destSquares.end());
+	basicMoves.erase(
+		std::remove_if(
+			basicMoves.begin(),
+			basicMoves.end(),
+			[&](const pair<int, int>& p) { return !(_board->isValidCoordinate(p.first, p.second)); }
+		),
+		basicMoves.end()
+	);
+	return basicMoves;
+}
+
+//It may move to any adjoining square
+//it may also perform a move known as castling
+std::vector<std::pair<int, int>> King::getValidMoves()
+{
+	vector<pair<int, int>> destSquares = getBasicMoves();
 
 	vector<pair<int, int>> piecesValidMoves;
 	// entire board
@@ -37,9 +47,16 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 			//Check if it is the king
 			if (piece->getPosition() == _position)
 				continue;
-
-			vector<pair<int, int>> currPieceValidMoves = piece->getValidMoves();
-			piecesValidMoves.insert(piecesValidMoves.end(), currPieceValidMoves.begin(), currPieceValidMoves.end());
+			if (piece->getColor() != _color) {
+				vector<pair<int, int>> currPieceValidMoves = piece->getBasicMoves();
+				piecesValidMoves.insert(piecesValidMoves.end(), currPieceValidMoves.begin(), currPieceValidMoves.end());
+			}
+			else
+			{
+				// Piece is the same color as the king - save it's position
+				// so the king won't override pieces of the same color.
+				piecesValidMoves.push_back(piece->getPosition());
+			}
 		}
 	}
 
@@ -50,11 +67,7 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 		if (std::find(piecesValidMoves.begin(), piecesValidMoves.end(), destPos) == piecesValidMoves.end())
 			validMoves.push_back(destPos);
 	}
-	/*for (pair<int, int> destPos : validMoves)
-		std::cout  << _color  << " King " << destPos.first << " " << destPos.second << std::endl;*/
-
 	return validMoves;
-
 }
 
 vector<pair<int, int>> King::getPeacefulMoves()

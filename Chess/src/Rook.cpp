@@ -1,6 +1,11 @@
 #include "Rook.h"
 
 
+vector<pair<int, int>> Rook::getBasicMoves()
+{
+	return getValidMoves();
+}
+
 //It may move any number of squares horizontally or vertically
 vector<pair<int, int>> Rook::getValidMoves()
 {

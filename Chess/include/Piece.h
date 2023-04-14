@@ -20,6 +20,7 @@ public:
 	pair<int, int> getPosition() const;
 	void setPosition(int, int);
 	void setCaptured();
+	virtual vector<pair<int, int>> getBasicMoves() = 0;
 	virtual vector<pair<int, int>> getValidMoves() = 0;
 	virtual vector<pair<int, int>> getPeacefulMoves() = 0;
 	virtual vector<pair<int, int>> getTakeMoves() = 0;
