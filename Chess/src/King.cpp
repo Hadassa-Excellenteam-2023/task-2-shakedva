@@ -35,7 +35,7 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 {
 	vector<pair<int, int>> destSquares = getBasicMoves();
 	// move temporarily the king from its position, in order to check the other pieces range of valid moves
-	pair<int, int> truePos = _position;
+	pair<int, int> kingPosition = _position;
 	_position = std::make_pair(-9, -9);
 	vector<pair<int, int>> piecesValidMoves;
 	// entire board
@@ -47,8 +47,7 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 				continue;
 			Piece* piece = _board->getPiece(i, j);
 			//Check if it is the king
-			//if (piece->getPosition() == _position)
-			if (piece->getPosition() == truePos)
+			if (piece->getPosition() == kingPosition)
 				continue;
 			if (piece->getColor() != _color) {
 				vector<pair<int, int>> currPieceValidMoves = piece->getBasicMoves();
@@ -70,7 +69,7 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 		if (std::find(piecesValidMoves.begin(), piecesValidMoves.end(), destPos) == piecesValidMoves.end())
 			validMoves.push_back(destPos);
 	}
-	_position = truePos;
+	_position = kingPosition;
 	return validMoves;
 }
 
