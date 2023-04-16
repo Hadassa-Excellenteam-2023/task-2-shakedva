@@ -1,18 +1,23 @@
 #include "Board.h"
 #include "Rook.h"
 #include "King.h"
+#include "Bishop.h"
 
 //string board = "R######R################################################r######r";
 Board::Board() : _turn(true)
 {
 	//white pieces
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
-	_pieces.push_back(std::make_unique<King>(true, 0, 4, this));
+	_pieces.push_back(std::make_unique<Bishop>(true, 0, 2, this));
+	_pieces.push_back(std::make_unique<King>(true, 0, 3, this));
+	_pieces.push_back(std::make_unique<Bishop>(true, 0, 5, this));
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 7, this));
 
 	//black pieces
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 0, this));
-	_pieces.push_back(std::make_unique<King>(false, 7, 4, this));
+	_pieces.push_back(std::make_unique<Bishop>(false, 7, 2, this));
+	_pieces.push_back(std::make_unique<King>(false, 7, 3, this));
+	_pieces.push_back(std::make_unique<Bishop>(false, 7, 5, this));
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
 	
 
@@ -89,12 +94,13 @@ int Board::movePiece(string input)
 		else
 		{
 			std::vector<std::pair<int, int>> validMoves = src_piece->getValidMoves();
-			for (size_t i = 0; i < validMoves.size(); i++)
+			/*for (size_t i = 0; i < validMoves.size(); i++)
 				std::cout << typeid(*src_piece).name() << " " << validMoves[i].first << ", " << validMoves[i].second << std::endl;
-			
+			*/
 			for (size_t i = 0; i < validMoves.size(); i++)
 			{
-				if (validMoves[i] == std::make_pair(trg_row, trg_col)) {
+				if (validMoves[i] == std::make_pair(trg_row, trg_col)) 
+				{
 					//todo: check if this move makes self checkmate 
 					//todo: check if this move makes checkmate againts enemy
 					if (trg_piece)
@@ -110,7 +116,7 @@ int Board::movePiece(string input)
 				std::cout << validMoves[i].first << ", " << validMoves[i].second << std::endl;
 		}
 	}
-	return 42;
+	//return 42;
 }
 
 

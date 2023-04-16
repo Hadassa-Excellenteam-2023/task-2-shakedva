@@ -3,4 +3,5 @@
 							  "Board.cpp"
 							  "Piece.cpp"
 							  "Rook.cpp"
-							  "King.cpp")
+							  "King.cpp"
+							  "Bishop.cpp")
