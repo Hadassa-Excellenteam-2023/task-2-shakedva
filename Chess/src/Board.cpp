@@ -2,6 +2,8 @@
 #include "Rook.h"
 #include "King.h"
 #include "Bishop.h"
+#include "Queen.h"
+
 
 //string board = "R######R################################################r######r";
 Board::Board() : _turn(true)
@@ -10,6 +12,7 @@ Board::Board() : _turn(true)
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
 	_pieces.push_back(std::make_unique<Bishop>(true, 0, 2, this));
 	_pieces.push_back(std::make_unique<King>(true, 0, 3, this));
+	_pieces.push_back(std::make_unique<Queen>(true, 0, 4, this));
 	_pieces.push_back(std::make_unique<Bishop>(true, 0, 5, this));
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 7, this));
 
@@ -17,6 +20,7 @@ Board::Board() : _turn(true)
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 0, this));
 	_pieces.push_back(std::make_unique<Bishop>(false, 7, 2, this));
 	_pieces.push_back(std::make_unique<King>(false, 7, 3, this));
+	_pieces.push_back(std::make_unique<Queen>(false, 7, 4, this));
 	_pieces.push_back(std::make_unique<Bishop>(false, 7, 5, this));
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
 	

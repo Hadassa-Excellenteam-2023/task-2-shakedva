@@ -3,7 +3,7 @@
 
 vector<pair<int, int>> Rook::getBasicMoves()
 {
-	return getValidMoves();
+	return Rook::getValidMoves();
 }
 
 //It may move any number of squares horizontally or vertically

@@ -1,15 +1,16 @@
-#pragma once
-#include <iostream>
-#include "Piece.h"
+#include "Bishop.h"
+#include "Rook.h"
 
-class Rook : virtual public Piece
+
+class Queen : public Rook, public Bishop
 {
 public:
-	using Piece::Piece;
+	using Bishop::Bishop;
+	using Rook::Rook;
+
+	Queen(bool, int, int, Board*);
 	virtual vector<pair<int, int>> getBasicMoves() override;
 	virtual vector<pair<int, int>> getValidMoves() override;
 	virtual vector<pair<int, int>> getPeacefulMoves() override;
 	virtual vector<pair<int, int>> getTakeMoves() override;
-private:
-
 };

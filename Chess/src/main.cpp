@@ -4,7 +4,7 @@
 
 int main()
 {
-	string board = "R#BK#B#R################################################r#bk#b#r"; 
+	string board = "R#BKQB#R################################################r#bkqb#r"; 
 	//string board = "RNBQKBNRPPPPPPPP################################pppppppprnbqkbnr"; 
 	//string board = "##########K###############################R#############r#r#####";
 	Board* b = new Board();

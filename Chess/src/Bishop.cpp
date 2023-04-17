@@ -3,7 +3,7 @@
 // It moves and captures along diagonals 
 vector<pair<int, int>> Bishop::getBasicMoves()
 {
-	return getValidMoves();
+	return Bishop::getValidMoves();
 }
 
 std::vector<std::pair<int, int>> Bishop::getValidMoves()

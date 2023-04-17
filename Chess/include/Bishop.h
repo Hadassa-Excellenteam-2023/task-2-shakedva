@@ -2,7 +2,7 @@
 #include <iostream>
 #include "Piece.h"
 
-class Bishop : public Piece
+class Bishop : virtual public Piece
 {
 public:
 	using Piece::Piece;
