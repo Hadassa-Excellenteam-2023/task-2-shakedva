@@ -4,8 +4,6 @@
 #include "Bishop.h"
 #include "Queen.h"
 
-
-//string board = "R######R################################################r######r";
 Board::Board() : _turn(true)
 {
 	//white pieces
@@ -26,7 +24,6 @@ Board::Board() : _turn(true)
 	
 	_whiteKing = (King*)getPiece(0, 3);
 	_blackKing = (King*)getPiece(7, 3);
-
 }
 
 Board::~Board()
@@ -34,15 +31,7 @@ Board::~Board()
 
 bool Board::isEmpty(int row, int col)
 {
-	//todo: use getPiece
-	if (!isValidCoordinate(row, col))
-		throw std::out_of_range("Invalid Coordinate");
-	
-	std::pair<int, int> pos = std::make_pair(row, col);
-	for (size_t i = 0; i < _pieces.size(); i++)
-		if (_pieces[i]->getPosition() == pos)
-			return false;
-	return true;
+	return getPiece(row, col) ? false : true;
 }
 
 Piece* Board::getPiece(int row, int col)
@@ -92,50 +81,47 @@ int Board::movePiece(string input)
 
 	if (!src_piece) 
 		return 11;
-	else {
-		if (src_piece->getColor() != _turn) 
-			return 12;
-		else if (trg_piece && trg_piece->getColor() == _turn)
-			return 13;
-		else
-		{
-			std::vector<std::pair<int, int>> validMoves = src_piece->getValidMoves();
-			/*for (size_t i = 0; i < validMoves.size(); i++)
-				std::cout << typeid(*src_piece).name() << " " << validMoves[i].first << ", " << validMoves[i].second << std::endl;
-			*/
-			for (size_t i = 0; i < validMoves.size(); i++)
-			{
-				if (validMoves[i] == std::make_pair(trg_row, trg_col)) 
-				{
-					//todo: check if this move makes self checkmate 
-					//todo: check if this move makes checkmate againts enemy
-					
-					if (trg_piece)
-						trg_piece->setCaptured();
-					src_piece->setPosition(trg_row, trg_col);
-					if (checkForCheck()) {
-						_turn = !_turn;
-						return 41;
-					}
-					_turn = !_turn;
-					return 42;
-				}
-			}
-			return 21;
+	
+	if (src_piece->getColor() != _turn) 
+		return 12;
 
-			for (size_t i = 0; i < validMoves.size(); i++)
-				std::cout << validMoves[i].first << ", " << validMoves[i].second << std::endl;
+	if (trg_piece && trg_piece->getColor() == _turn)
+		return 13;
+
+	std::vector<std::pair<int, int>> validMoves = src_piece->getValidMoves();
+	for (size_t i = 0; i < validMoves.size(); i++)
+	{
+		if (validMoves[i] == std::make_pair(trg_row, trg_col)) 
+		{
+			src_piece->setPosition(trg_row, trg_col);
+			if (trg_piece)
+				trg_piece->setCaptured(); 
+
+			// check if this move makes self-check
+			if (checkForCheck(_turn)) {
+				src_piece->setPosition(src_row, src_col);
+				if (trg_piece)
+					trg_piece->setPosition(trg_row, trg_col); //TODO SET IT UNCAPTURED
+				return 31;
+			}
+			// Legal moves from now on
+
+			//check if the move makes check againts enemy
+			if (checkForCheck(!_turn)) {
+				_turn = !_turn;
+				return 41;
+			}
+
+			_turn = !_turn;
+			return 42;
 		}
 	}
-	//return 42;
+	return 21;
 }
-
-bool Board::checkForCheck()
+// Check if there is check againts the king of the color received
+bool Board::checkForCheck(bool color)
 {
-	if (_turn)
-		return _blackKing->isInCheck();
-	
-	return _whiteKing->isInCheck();
+	return color ? _whiteKing->isInCheck() : _blackKing->isInCheck();
 }
 
 

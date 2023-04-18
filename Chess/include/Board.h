@@ -20,7 +20,7 @@ public:
 	int movePiece(string);
 
 private:
-	bool checkForCheck();
+	bool checkForCheck(bool);
 	std::vector<std::unique_ptr<Piece>> _pieces;
 	King* _whiteKing;
 	King* _blackKing;
