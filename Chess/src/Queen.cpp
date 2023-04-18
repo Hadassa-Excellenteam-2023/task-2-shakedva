@@ -18,13 +18,3 @@ vector<pair<int, int>> Queen::getValidMoves()
 	allMoves.insert(allMoves.end(), rookMoves.begin(), rookMoves.end());
 	return allMoves;
 }
-
-vector<pair<int, int>> Queen::getPeacefulMoves()
-{
-	return vector<pair<int, int>>();
-}
-
-vector<pair<int, int>> Queen::getTakeMoves()
-{
-	return vector<pair<int, int>>();
-}

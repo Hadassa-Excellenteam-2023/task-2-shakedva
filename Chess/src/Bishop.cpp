@@ -65,12 +65,3 @@ std::vector<std::pair<int, int>> Bishop::getValidMoves()
 	return validMoves;
 }
 
-std::vector<std::pair<int, int>> Bishop::getPeacefulMoves()
-{
-	return std::vector<std::pair<int, int>>();
-}
-
-std::vector<std::pair<int, int>> Bishop::getTakeMoves()
-{
-	return std::vector<std::pair<int, int>>();
-}

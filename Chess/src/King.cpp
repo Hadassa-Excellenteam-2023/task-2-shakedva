@@ -73,16 +73,6 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 	return validMoves;
 }
 
-vector<pair<int, int>> King::getPeacefulMoves()
-{
-	return vector<pair<int, int>>();
-}
-
-vector<pair<int, int>> King::getTakeMoves()
-{
-	return vector<pair<int, int>>();
-}
-
 bool King::isInCheck() const
 {
 	return false;

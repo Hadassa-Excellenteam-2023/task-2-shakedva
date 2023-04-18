@@ -71,13 +71,3 @@ vector<pair<int, int>> Rook::getValidMoves()
 	
 	return validMoves;
 }
-
-vector<pair<int, int>> Rook::getPeacefulMoves()
-{
-	return vector<pair<int, int>>();
-}
-
-vector<pair<int, int>> Rook::getTakeMoves()
-{
-	return vector<pair<int, int>>();
-}
