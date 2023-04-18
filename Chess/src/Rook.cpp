@@ -30,11 +30,11 @@ vector<pair<int, int>> Rook::getValidMoves()
 	return validMoves;
 }
 
-vector<pair<int, int>> Rook::getMovesWithDirection(int row, int col, int rowDelta, int colDelta)
+vector<pair<int, int>> Rook::getMovesWithDirection(int row, int col, int rowOffset, int colOffset)
 {
 	vector<pair<int, int>> moves;
-	int currRow = row + rowDelta;
-	int currCol = col + colDelta;
+	int currRow = row + rowOffset;
+	int currCol = col + colOffset;
 	while (currRow >= 0 && currRow < 8 && currCol >= 0 && currCol < 8)
 	{
 		// Peaceful move
@@ -49,8 +49,8 @@ vector<pair<int, int>> Rook::getMovesWithDirection(int row, int col, int rowDelt
 		else // My piece
 			break;
 		
-		currRow += rowDelta;
-		currCol += colDelta;
+		currRow += rowOffset;
+		currCol += colOffset;
 	}
 
 	return moves;
