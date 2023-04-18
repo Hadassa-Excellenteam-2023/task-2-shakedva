@@ -73,8 +73,38 @@ std::vector<std::pair<int, int>> King::getValidMoves()
 	return validMoves;
 }
 
-bool King::isInCheck() const
+bool King::isInCheck() 
 {
+	vector<pair<int, int>> piecesValidMoves;
+	// entire board
+	for (size_t i = 0; i < 8; i++)
+	{
+		for (size_t j = 0; j < 8; j++)
+		{
+			if (_board->isEmpty(i, j))
+				continue;
+			Piece* piece = _board->getPiece(i, j);
+			//Check if it is the king
+			if (piece->getPosition() == _position)
+				continue;
+			if (piece->getColor() != _color) {
+				vector<pair<int, int>> currPieceValidMoves = piece->getBasicMoves();
+				piecesValidMoves.insert(piecesValidMoves.end(), currPieceValidMoves.begin(), currPieceValidMoves.end());
+			}
+		}
+	}
+
+	for (pair<int, int> pos : piecesValidMoves)
+	{
+		if (pos == _position) // at least one of the pieces is threatening the king
+			return true;
+	}
+		
 	return false;
+}
+
+bool King::isInCheckmate()
+{
+	return isInCheck() && getValidMoves().size() == 0;
 }
 

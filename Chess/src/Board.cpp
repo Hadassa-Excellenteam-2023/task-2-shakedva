@@ -24,6 +24,8 @@ Board::Board() : _turn(true)
 	_pieces.push_back(std::make_unique<Bishop>(false, 7, 5, this));
 	_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
 	
+	_whiteKing = (King*)getPiece(0, 3);
+	_blackKing = (King*)getPiece(7, 3);
 
 }
 
@@ -107,9 +109,14 @@ int Board::movePiece(string input)
 				{
 					//todo: check if this move makes self checkmate 
 					//todo: check if this move makes checkmate againts enemy
+					
 					if (trg_piece)
 						trg_piece->setCaptured();
 					src_piece->setPosition(trg_row, trg_col);
+					if (checkForCheck()) {
+						_turn = !_turn;
+						return 41;
+					}
 					_turn = !_turn;
 					return 42;
 				}
@@ -121,6 +128,14 @@ int Board::movePiece(string input)
 		}
 	}
 	//return 42;
+}
+
+bool Board::checkForCheck()
+{
+	if (_turn)
+		return _blackKing->isInCheck();
+	
+	return _whiteKing->isInCheck();
 }
 
 

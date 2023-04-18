@@ -14,7 +14,7 @@ class Piece
 {
 public:
 	Piece(bool, int, int, Board*);
-	~Piece();
+	virtual ~Piece();
 	bool getColor() const;
 	bool getIsCaptured() const;
 	pair<int, int> getPosition() const;

@@ -2,10 +2,12 @@
 #include <iostream>
 #include <vector>
 #include <string>
+//#include "Piece.h"
 
 using std::string;
 
 class Piece;
+class King;
 
 class Board
 {
@@ -18,7 +20,9 @@ public:
 	int movePiece(string);
 
 private:
+	bool checkForCheck();
 	std::vector<std::unique_ptr<Piece>> _pieces;
-	
+	King* _whiteKing;
+	King* _blackKing;
 	bool _turn; // true is white's turn
 };
