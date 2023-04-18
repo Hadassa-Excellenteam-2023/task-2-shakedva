@@ -7,5 +7,6 @@ class Bishop : virtual public Piece
 public:
 	using Piece::Piece;
 	virtual vector<pair<int, int>> getBasicMoves() override;
-	virtual std::vector<std::pair<int, int>> getValidMoves() override;
+	virtual vector<pair<int, int>> getValidMoves() override;
+	vector<pair<int, int>> getMovesWithDirection(int, int);
 };

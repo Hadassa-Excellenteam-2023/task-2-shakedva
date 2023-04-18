@@ -9,59 +9,48 @@ vector<pair<int, int>> Bishop::getBasicMoves()
 std::vector<std::pair<int, int>> Bishop::getValidMoves()
 {
 	vector<pair<int, int>> validMoves;
+	// up left
+	auto upLeftMoves = getMovesWithDirection(-1, -1);
+	std::copy(upLeftMoves.begin(), upLeftMoves.end(), std::back_inserter(validMoves));
 
-	//up left
-	for (int i = _position.first - 1, j = _position.second - 1; i >= 0 && j >= 0; i--, j--)
-	{
-		if (_board->isEmpty(i, j))
-			validMoves.push_back(make_pair(i, j));
-		// Take move
-		else if (_board->getPiece(i, j)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, j));
-			break;
-		}
-		else if (_board->getPiece(i, j)->getColor() == _color)
-			break;
-	}
 	// up right
-	for (int i = _position.first - 1, j = _position.second + 1; i >= 0 && j < 8; i--, j++)
-	{
-		if (_board->isEmpty(i, j))
-			validMoves.push_back(make_pair(i, j));
-		// Take move
-		else if (_board->getPiece(i, j)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, j));
-			break;
-		}
-		else if (_board->getPiece(i, j)->getColor() == _color)
-			break;
-	}
-	//down left
-	for (int i = _position.first + 1, j = _position.second - 1; i < 8 && j >= 0; i++, j--)
-	{
-		if (_board->isEmpty(i, j))
-			validMoves.push_back(make_pair(i, j));
-		// Take move
-		else if (_board->getPiece(i, j)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, j));
-			break;
-		}
-		else if (_board->getPiece(i, j)->getColor() == _color)
-			break;
-	}
+	auto upRightMoves = getMovesWithDirection(-1, 1);
+	std::copy(upRightMoves.begin(), upRightMoves.end(), std::back_inserter(validMoves));
+
+	// down left
+	auto downLeftMoves = getMovesWithDirection(1, -1);
+	std::copy(downLeftMoves.begin(), downLeftMoves.end(), std::back_inserter(validMoves));
+
 	// down right
-	for (int i = _position.first + 1, j = _position.second + 1; i < 8 && j < 8; i++, j++)
+	auto downRightMoves = getMovesWithDirection(1, 1);
+	std::copy(downRightMoves.begin(), downRightMoves.end(), std::back_inserter(validMoves));
+
+	return validMoves;
+}
+// Same function as in the Rook class. Consider moving it to a global scope.
+vector<pair<int, int>> Bishop::getMovesWithDirection(int rowOffset, int colOffset)
+{
+	vector<pair<int, int>> moves;
+
+	int currRow = _position.first + rowOffset;
+	int currCol = _position.second + colOffset;
+	while (currRow >= 0 && currRow < 8 && currCol >= 0 && currCol < 8)
 	{
-		if (_board->isEmpty(i, j))
-			validMoves.push_back(make_pair(i, j));
+		// Peaceful move
+		if (_board->isEmpty(currRow, currCol))
+			moves.push_back(make_pair(currRow, currCol));
 		// Take move
-		else if (_board->getPiece(i, j)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, j));
+		else if (_board->getPiece(currRow, currCol)->getColor() != _color)
+		{
+			moves.push_back(make_pair(currRow, currCol));
 			break;
 		}
-		else if (_board->getPiece(i, j)->getColor() == _color)
+		else // My piece
 			break;
+
+		currRow += rowOffset;
+		currCol += colOffset;
 	}
-	return validMoves;
+	return moves;
 }
 
