@@ -12,62 +12,47 @@ vector<pair<int, int>> Rook::getValidMoves()
 	vector<pair<int, int>> validMoves;
 
 	// up
-	for (int i = _position.first - 1; i >= 0; i--)
+	auto upMoves = getMovesWithDirection(_position.first, _position.second, -1, 0);
+	std::copy(upMoves.begin(), upMoves.end(), std::back_inserter(validMoves));
+
+	// down
+	auto downMoves = getMovesWithDirection(_position.first, _position.second, 1, 0);
+	std::copy(downMoves.begin(), downMoves.end(), std::back_inserter(validMoves));
+
+	// left
+	auto leftMoves = getMovesWithDirection(_position.first, _position.second, 0, -1);
+	std::copy(leftMoves.begin(), leftMoves.end(), std::back_inserter(validMoves));
+
+	// right
+	auto rightMoves = getMovesWithDirection(_position.first, _position.second, 0, 1);
+	std::copy(rightMoves.begin(), rightMoves.end(), std::back_inserter(validMoves));
+
+	return validMoves;
+}
+
+vector<pair<int, int>> Rook::getMovesWithDirection(int row, int col, int rowDelta, int colDelta)
+{
+	vector<pair<int, int>> moves;
+	int currRow = row + rowDelta;
+	int currCol = col + colDelta;
+	while (currRow >= 0 && currRow < 8 && currCol >= 0 && currCol < 8)
 	{
 		// Peaceful move
-		if (_board->isEmpty(i, _position.second))
-			validMoves.push_back(make_pair(i, _position.second));
+		if (_board->isEmpty(currRow, currCol))
+			moves.push_back(make_pair(currRow, currCol));
 		// Take move
-		else if (_board->getPiece(i, _position.second)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, _position.second));
+		else if (_board->getPiece(currRow, currCol)->getColor() != _color)
+		{
+			moves.push_back(make_pair(currRow, currCol));
 			break;
 		}
-		else if (_board->getPiece(i, _position.second)->getColor() == _color)
+		else // My piece
 			break;
-	}
-	//down
-	for (int i = _position.first + 1; i < 8; i++)
-	{
-		// Peaceful move
-		if (_board->isEmpty(i, _position.second))
-			validMoves.push_back(make_pair(i, _position.second));
-		// Take move
-		else if (_board->getPiece(i, _position.second)->getColor() != _color) {
-			validMoves.push_back(make_pair(i, _position.second));
-			break;
-		}
-		else if (_board->getPiece(i, _position.second)->getColor() == _color)
-			break;
-	}
-	//left
-	for (int i = _position.second - 1; i >= 0; i--)
-	{
-		// Peaceful move
-		if (_board->isEmpty(_position.first, i))
-			validMoves.push_back(make_pair(_position.first, i));
-		// Take move
-		else if (_board->getPiece(_position.first, i)->getColor() != _color) {
-			validMoves.push_back(make_pair(_position.first, i));
-			break;
-		}
-		else if (_board->getPiece(_position.first, i)->getColor() == _color)
-			break;
-	}
-	//right
-	for (int i = _position.second + 1; i < 8; i++)
-	{
-		// Peaceful move
-		if (_board->isEmpty(_position.first, i))
-			validMoves.push_back(make_pair(_position.first, i));
-		// Take move
-		else if (_board->getPiece(_position.first, i)->getColor() != _color) {
-			validMoves.push_back(make_pair(_position.first, i));
-			break;
-		}
-		else if (_board->getPiece(_position.first, i)->getColor() == _color)
-			break;
+		
+		currRow += rowDelta;
+		currCol += colDelta;
 	}
 
+	return moves;
 	
-	return validMoves;
 }
