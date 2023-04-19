@@ -9,7 +9,6 @@ using std::vector;
 using std::pair;
 using std::make_pair;
 
-
 class Piece
 {
 public:
@@ -19,7 +18,7 @@ public:
 	bool getIsCaptured() const;
 	pair<int, int> getPosition() const;
 	void setPosition(int, int);
-	void setCaptured();
+	void setCaptured(bool);
 	virtual vector<pair<int, int>> getBasicMoves() = 0;
 	virtual vector<pair<int, int>> getValidMoves() = 0;
 

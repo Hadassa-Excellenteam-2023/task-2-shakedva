@@ -30,9 +30,9 @@ void Piece::setPosition(int row, int col)
 	_position = make_pair(row, col);
 }
 
-void Piece::setCaptured()
+void Piece::setCaptured(bool captured)
 {
-	_position = make_pair(-9, -9);
-	_isCaptured = true;
+	if(captured)
+		_position = make_pair(-9, -9);
+	_isCaptured = captured;
 }
-

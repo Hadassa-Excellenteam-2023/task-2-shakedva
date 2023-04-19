@@ -4,7 +4,7 @@
 #include "Bishop.h"
 #include "Queen.h"
 
-Board::Board() : _turn(true)
+Board::Board() : _turn(true) // White starts
 {
 	//white pieces
 	_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
@@ -27,7 +27,10 @@ Board::Board() : _turn(true)
 }
 
 Board::~Board()
-{}
+{
+	delete _whiteKing;
+	delete _blackKing;
+}
 
 bool Board::isEmpty(int row, int col)
 {
@@ -95,13 +98,16 @@ int Board::movePiece(string input)
 		{
 			src_piece->setPosition(trg_row, trg_col);
 			if (trg_piece)
-				trg_piece->setCaptured(); 
+				trg_piece->setCaptured(true); 
 
 			// check if this move makes self-check
 			if (checkForCheck(_turn)) {
 				src_piece->setPosition(src_row, src_col);
-				if (trg_piece)
-					trg_piece->setPosition(trg_row, trg_col); //TODO SET IT UNCAPTURED
+				
+				if (trg_piece) {
+					trg_piece->setPosition(trg_row, trg_col);
+					trg_piece->setCaptured(false);
+				}
 				return 31;
 			}
 			// Legal moves from now on
