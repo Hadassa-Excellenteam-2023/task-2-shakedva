@@ -3,38 +3,39 @@
 #include "King.h"
 #include "Bishop.h"
 #include "Queen.h"
+#include "macros.h"
 
-Board::Board() : _turn(true) // White starts
+Board::Board() : m_turn(true) // White starts
 {
 	//white pieces
-	_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
-	_pieces.push_back(std::make_unique<Bishop>(true, 0, 2, this));
-	_pieces.push_back(std::make_unique<King>(true, 0, 3, this));
-	_pieces.push_back(std::make_unique<Queen>(true, 0, 4, this));
-	_pieces.push_back(std::make_unique<Bishop>(true, 0, 5, this));
-	_pieces.push_back(std::make_unique<Rook>(true, 0, 7, this));
+	m_pieces.push_back(std::make_unique<Rook>(true, 0, 0, this));
+	m_pieces.push_back(std::make_unique<Bishop>(true, 0, 2, this));
+	m_pieces.push_back(std::make_unique<King>(true, 0, 3, this));
+	m_pieces.push_back(std::make_unique<Queen>(true, 0, 4, this));
+	m_pieces.push_back(std::make_unique<Bishop>(true, 0, 5, this));
+	m_pieces.push_back(std::make_unique<Rook>(true, 0, 7, this));
 
 	//black pieces
-	_pieces.push_back(std::make_unique<Rook>(false, 7, 0, this));
-	_pieces.push_back(std::make_unique<Bishop>(false, 7, 2, this));
-	_pieces.push_back(std::make_unique<King>(false, 7, 3, this));
-	_pieces.push_back(std::make_unique<Queen>(false, 7, 4, this));
-	_pieces.push_back(std::make_unique<Bishop>(false, 7, 5, this));
-	_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
+	m_pieces.push_back(std::make_unique<Rook>(false, 7, 0, this));
+	m_pieces.push_back(std::make_unique<Bishop>(false, 7, 2, this));
+	m_pieces.push_back(std::make_unique<King>(false, 7, 3, this));
+	m_pieces.push_back(std::make_unique<Queen>(false, 7, 4, this));
+	m_pieces.push_back(std::make_unique<Bishop>(false, 7, 5, this));
+	m_pieces.push_back(std::make_unique<Rook>(false, 7, 7, this));
 	
-	_whiteKing = (King*)getPiece(0, 3);
-	_blackKing = (King*)getPiece(7, 3);
+	m_whiteKing = (King*)getPiece(0, 3);
+	m_blackKing = (King*)getPiece(7, 3);
 }
 
 Board::~Board()
 {
-	delete _whiteKing;
-	delete _blackKing;
+	delete m_whiteKing;
+	delete m_blackKing;
 }
 
 bool Board::isEmpty(int row, int col)
 {
-	return getPiece(row, col) ? false : true;
+	return !getPiece(row, col);
 }
 
 Piece* Board::getPiece(int row, int col)
@@ -43,16 +44,15 @@ Piece* Board::getPiece(int row, int col)
 		throw std::out_of_range("Invalid Coordinate");
 
 	std::pair<int, int> pos = std::make_pair(row, col);
-	for (size_t i = 0; i < _pieces.size(); i++)
-		if (_pieces[i]->getPosition() == pos)
-			return _pieces[i].get();
-
+	for (const auto& piece : m_pieces)
+		if(piece->getPosition() == pos)
+			return piece.get();
 	return nullptr;
 }
 
 bool Board::isValidCoordinate(int row, int col) const
 {
-	return row >= 0 && row < 8 && col >= 0 && col < 8;
+	return row >= BOARD_MIN && row < BOARD_MAX&& col >= BOARD_MIN && col < BOARD_MAX;
 }
 
 //Illegal movements :
@@ -68,28 +68,28 @@ bool Board::isValidCoordinate(int row, int col) const
 
 int Board::movePiece(string input)
 {
-	int src_row = (input[0] - 'a');
-	int src_col = (input[1] - '1');
+	int src_row = extractRow(input[0]);
+	int src_col = extractCol(input[1]);
 	
-	int trg_row = (input[2] - 'a');
-	int trg_col = (input[3] - '1');
+	int trg_row = extractRow(input[2]);
+	int trg_col = extractCol(input[3]);
 
 	if (!isValidCoordinate(src_row, src_col))
-		return 11;
+		return SRC_EMPTY;
 	if (!isValidCoordinate(trg_row, trg_col))
-		return 21;
+		return ILLEGAL_PIECE_MOVE;
 
 	Piece* src_piece = getPiece(src_row, src_col);
 	Piece* trg_piece = getPiece(trg_row, trg_col);
 
 	if (!src_piece) 
-		return 11;
+		return SRC_EMPTY;
 	
-	if (src_piece->getColor() != _turn) 
-		return 12;
+	if (src_piece->getColor() != m_turn) 
+		return SRC_IS_ENEMY;
 
-	if (trg_piece && trg_piece->getColor() == _turn)
-		return 13;
+	if (trg_piece && trg_piece->getColor() == m_turn)
+		return TRG_IS_CURR_PLAYER;
 
 	std::vector<std::pair<int, int>> validMoves = src_piece->getValidMoves();
 	for (size_t i = 0; i < validMoves.size(); i++)
@@ -101,33 +101,43 @@ int Board::movePiece(string input)
 				trg_piece->setCaptured(true); 
 
 			// check if this move makes self-check
-			if (checkForCheck(_turn)) {
+			if (checkForCheck(m_turn)) {
 				src_piece->setPosition(src_row, src_col);
 				
 				if (trg_piece) {
 					trg_piece->setPosition(trg_row, trg_col);
 					trg_piece->setCaptured(false);
 				}
-				return 31;
+				return CAUSE_SELF_CHECK;
 			}
 			// Legal moves from now on
 
 			//check if the move makes check againts enemy
-			if (checkForCheck(!_turn)) {
-				_turn = !_turn;
-				return 41;
+			if (checkForCheck(!m_turn)) {
+				m_turn = !m_turn;
+				return CAUSE_CHECK;
 			}
 
-			_turn = !_turn;
-			return 42;
+			m_turn = !m_turn;
+			return REGULAR_MOVE;
 		}
 	}
-	return 21;
+	return ILLEGAL_PIECE_MOVE;
 }
 // Check if there is check againts the king of the color received
 bool Board::checkForCheck(bool color)
 {
-	return color ? _whiteKing->isInCheck() : _blackKing->isInCheck();
+	return color ? m_whiteKing->isInCheck() : m_blackKing->isInCheck();
+}
+
+int Board::extractRow(char input)
+{
+	return input - 'a';
+}
+
+int Board::extractCol(char input)
+{
+	return input - '1';
 }
 
 

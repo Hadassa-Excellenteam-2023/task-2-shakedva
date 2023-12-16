@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-//#include "Piece.h"
 
 using std::string;
 
@@ -21,8 +20,10 @@ public:
 
 private:
 	bool checkForCheck(bool);
-	std::vector<std::unique_ptr<Piece>> _pieces;
-	King* _whiteKing;
-	King* _blackKing;
-	bool _turn; // true is white's turn
+	int extractRow(char);
+	int extractCol(char);
+	std::vector<std::unique_ptr<Piece>> m_pieces;
+	King* m_whiteKing;
+	King* m_blackKing;
+	bool m_turn; // true is white's turn
 };

@@ -32,15 +32,15 @@ vector<pair<int, int>> Bishop::getMovesWithDirection(int rowOffset, int colOffse
 {
 	vector<pair<int, int>> moves;
 
-	int currRow = _position.first + rowOffset;
-	int currCol = _position.second + colOffset;
-	while (currRow >= 0 && currRow < 8 && currCol >= 0 && currCol < 8)
+	int currRow = m_position.first + rowOffset;
+	int currCol = m_position.second + colOffset;
+	while (currRow >= BOARD_MIN && currRow < BOARD_MAX && currCol >= BOARD_MIN && currCol < BOARD_MAX)
 	{
 		// Peaceful move
-		if (_board->isEmpty(currRow, currCol))
+		if (m_board->isEmpty(currRow, currCol))
 			moves.push_back(make_pair(currRow, currCol));
 		// Take move
-		else if (_board->getPiece(currRow, currCol)->getColor() != _color)
+		else if (m_board->getPiece(currRow, currCol)->getColor() != m_color)
 		{
 			moves.push_back(make_pair(currRow, currCol));
 			break;

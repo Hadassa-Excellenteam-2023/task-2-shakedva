@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Piece.h"
 
 class Rook : virtual public Piece

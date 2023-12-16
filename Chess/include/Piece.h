@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Board.h"
+#include "macros.h"
 
 using std::string;
 using std::vector;
@@ -23,9 +24,8 @@ public:
 	virtual vector<pair<int, int>> getValidMoves() = 0;
 
 protected:
-	bool _color; // white is true
-	pair<int, int> _position;
-	Board* _board;
-	bool _isCaptured;
-	
+	bool m_color; // white is true
+	pair<int, int> m_position;
+	Board* m_board;
+	bool m_isCaptured;
 };
